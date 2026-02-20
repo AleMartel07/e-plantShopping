@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'; //
-import { addItem } from './CartSlice'; // 
+import { useDispatch, useSelector } from 'react-redux'; 
+import { addItem } from './CartSlice'; 
 import './ProductList.css';
 import CartItem from './CartItem';
 
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
-    const [showPlants, setShowPlants] = useState(false);
-    
-    
     const [addedToCart, setAddedToCart] = useState({});
-
+    
     const dispatch = useDispatch();
+    
+    const cartItems = useSelector(state => state.cart.items);
+    const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
     const plantsArray = [
         {
@@ -29,16 +29,15 @@ function ProductList({ onHomeClick }) {
                     description: "Filters formaldehyde and xylene from the air.",
                     cost: "$12"
                 }
-               
             ]
         }
     ];
 
     const handleAddToCart = (product) => {
-        dispatch(addItem(product)); // Envía la planta al store de Redux
+        dispatch(addItem(product)); 
         setAddedToCart((prevState) => ({
            ...prevState,
-           [product.name]: true, // Marca este producto como añadido
+           [product.name]: true, 
         }));
     };
 
@@ -84,6 +83,7 @@ function ProductList({ onHomeClick }) {
                     <div>
                         <a href="#" onClick={(e) => { e.preventDefault(); setShowCart(true); }} style={styleA}>
                             <h1 className='cart'>
+                                <span className="cart-quantity-nav">{totalItems}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" height="68" width="68">
                                     <rect width="156" height="156" fill="none"></rect>
                                     <circle cx="80" cy="216" r="12"></circle>
@@ -109,7 +109,7 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-description">{plant.description}</div>
                                         <div className="product-cost">{plant.cost}</div>
                                         <button 
-                                            className="product-button" 
+                                            className={`product-button ${addedToCart[plant.name] ? 'added' : ''}`}
                                             disabled={addedToCart[plant.name]} 
                                             onClick={() => handleAddToCart(plant)}
                                         >
