@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'; // Requerimiento 5
-import { addItem } from './CartSlice'; // Requerimiento 5
+import { useDispatch } from 'react-redux'; //
+import { addItem } from './CartSlice'; // 
 import './ProductList.css';
 import CartItem from './CartItem';
 
@@ -8,10 +8,10 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false);
     
-    // Requerimiento 4: Estado para rastrear productos añadidos (usa el nombre como clave)
+    
     const [addedToCart, setAddedToCart] = useState({});
 
-    const dispatch = useDispatch(); // Requerimiento 5
+    const dispatch = useDispatch();
 
     const plantsArray = [
         {
@@ -29,12 +29,11 @@ function ProductList({ onHomeClick }) {
                     description: "Filters formaldehyde and xylene from the air.",
                     cost: "$12"
                 }
-                // ... puedes mantener el resto de tu array aquí
+               
             ]
         }
     ];
 
-    // Requerimiento 5: Función para manejar la adición al carrito
     const handleAddToCart = (product) => {
         dispatch(addItem(product)); // Envía la planta al store de Redux
         setAddedToCart((prevState) => ({
@@ -99,7 +98,6 @@ function ProductList({ onHomeClick }) {
 
             {!showCart ? (
                 <div className="product-container">
-                    {/* Requerimiento 2 y 3: Uso de map para renderizar plantas */}
                     {plantsArray.map((category, index) => (
                         <div key={index}>
                             <h1 className="category-title">{category.category}</h1>
@@ -110,7 +108,6 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-title">{plant.name}</div>
                                         <div className="product-description">{plant.description}</div>
                                         <div className="product-cost">{plant.cost}</div>
-                                        {/* Requerimiento 3 y 5: Botón con lógica de estado */}
                                         <button 
                                             className="product-button" 
                                             disabled={addedToCart[plant.name]} 
